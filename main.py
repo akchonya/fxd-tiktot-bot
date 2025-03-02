@@ -173,7 +173,7 @@ async def reply_to_video_handler(message: Message, state: FSMContext, bot: Bot) 
         f"💬 {html.bold('коментар:')} {message.text}",
         reply_to_message_id=data["message_id"],
     )
-    await message.react(ReactionTypeEmoji(emoji="👌"))
+    await message.react([ReactionTypeEmoji(emoji="👌")])
     await state.clear()
 
 
