@@ -1,0 +1,12 @@
+# venv
+venv/
+
+# pycache
+__pycache__/
+
+# mp4 files
+*.mp4
+
+# chrome driver
+chrome
+
