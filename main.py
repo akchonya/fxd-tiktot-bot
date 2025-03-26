@@ -89,7 +89,7 @@ async def process_tiktok(url):
 
     async with aiohttp.ClientSession() as session:
         async with async_playwright() as p:
-            browser = await p.chromium.launch(headless=False)
+            browser = await p.chromium.launch(headless=True)
             context = await browser.new_context()
             page = await context.new_page()
 
@@ -210,6 +210,8 @@ async def tiktok_handler(message: Message, bot: Bot) -> None:
             )
         await message.reply("✅ відео надіслано, дякую!!")
     except KeyError:
+        # Send a message that media is being processed
+        await message.reply("🔄 медіа завантажується...")
         # Create temporary directory for this user
         temp_dir = f"downloads/{message.from_user.id}"
         os.makedirs(temp_dir, exist_ok=True)

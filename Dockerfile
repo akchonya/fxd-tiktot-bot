@@ -1,30 +1,19 @@
-FROM python:3.11-slim
+FROM mcr.microsoft.com/playwright/python:v1.50.0-jammy
 
 WORKDIR /app
 
-# Install system dependencies required for pyktok and browser automation
-RUN apt-get update && apt-get install -y \
-    wget \
-    gnupg \
-    && wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add - \
-    && echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list \
-    && apt-get update \
-    && apt-get install -y \
-    google-chrome-stable \
-    && apt-get clean \
-    && rm -rf /var/lib/apt/lists/*
-
-# Copy requirements file
+# Copy requirements and install
 COPY requirements.txt .
-
-# Install Python dependencies
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy the bot code
+# Copy application
 COPY main.py .
 
-# Environment variables will be passed when running the container
-# using docker run -e BOT_TOKEN=your_token -e ADMIN_ID=your_id
+# Create downloads directory
+RUN mkdir -p downloads
+
+# Set environment variables
+ENV PYTHONUNBUFFERED=1
 
 # Run the bot
-CMD ["python", "main.py"] 
+CMD ["python", "main.py"]
